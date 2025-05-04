@@ -15,6 +15,11 @@ services:
     networks:
       - code-network
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
   php:
     build: /data/docker-standalone/Dockerfiles/php
     image: 'remdex/livehelperchat-php:latest'
@@ -38,6 +43,11 @@ services:
     networks:
       - code-network
     restart: always
+    healthcheck:
+      test: ["CMD", "pgrep", "-x", "php-fpm"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
   cobrowse:
     build: /data/docker-standalone/Dockerfiles/cobrowse
     image: 'remdex/livehelperchat-cobrowse:latest'
